@@ -36,7 +36,7 @@ function populateQuestion() {
     questionsContainer.innerHTML = questions[questionIndex].question;
     let btn=document.createElement('button');
     btn.innerText=questions[questionIndex].answers[i].text;
-    btn.value=questions[i].answers[i].correct;
+    btn.value=questions[questionIndex].answers[i].correct;
     btn.classList.add('btn');
     btn.addEventListener('click', checkAnswer);
     answersContainer.appendChild(btn);
@@ -48,7 +48,7 @@ function nextQuestion() {
   resetState(questionsContainer);
   questionIndex++;
   populateQuestion();
-  if(timeleft <= 0 || questionIndex > questions.length){
+  if(timeLeft <= 0 || questionIndex > questions.length){
     clearInterval(startTimer);
     gameOver();
   }
@@ -72,8 +72,10 @@ if (event.target.value == 'false') {
     // nextQuestion();
        }
 }
+
+// win/loose condition
 function gameOver () {
-  
+
 }
 // Questions database
 
