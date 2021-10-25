@@ -1,56 +1,76 @@
 
-// Start quiz
+// Declaring variables
 let questionsContainer = document.getElementById('questionsContainer');
 let answersContainer = document.getElementById('answersContainer');
 let nextQuestionBtn = document.getElementById('nextQuestionBtn');
 let timer = document.getElementById('timer');
 let startBtn = document.getElementById('startBtn');
+let timeLeft = 90;
 startBtn.addEventListener('click', startQuiz);
-
-// Start quiz function
+nextQuestionBtn.addEventListener('click', nextQuestion);
+// Keeps track of question index
 let questionIndex = 0;
 
+// Start quiz function
 function startQuiz() {
+startTimer();
+populateQuestion();
 startBtn.classList.add('hide');
 timer.classList.remove('hide');
 nextQuestionBtn.classList.remove('hide');
 questionsContainer.classList.remove ('hide');
 answersContainer.classList.remove('hide');
-console.log("quiz started");
-console.log(questions[questionIndex]);
-
 questionsContainer.innerHTML = questions[questionIndex].question;
-console.log(answersContainer);
 
-for (let i = 0; i < questions[questionIndex].answers.length; i++) {
-  let btn=document.createElement('button');
-  btn.innerText=questions[questionIndex].answers[i].text;
-  btn.value=questions[questionIndex].answers[i].correct;
-  btn.classList.add('btn');
-  btn.addEventListener('click', checkAnswer);
-  answersContainer.appendChild(btn);
+function populateQuestion() {
+  for (let i = 0; i < questions[questionIndex].answers.length; i++) {
+    let btn=document.createElement('button');
+    btn.innerText=questions[questionIndex].answers[i].text;
+    btn.value=questions[questionIndex].answers[i].correct;
+    btn.classList.add('btn');
+    btn.addEventListener('click', checkAnswer);
+    answersContainer.appendChild(btn);
+  }
+  questionIndex++;
+  }
 }
-questionIndex++;
-}
-function checkAnswer(event) {
- // see if i can add a disable function
-if (event.target.value == 'false') {
-  // Create a css class for wrong and right answers
-  // check time
 
-}
-console.log(event);
-}
-// Start timer function 
-function startTimer() {
-
-}
-nextQuestionBtn.addEventListener ('click', nextQuestion);
 function nextQuestion() {
-  console.log ('next question');
-
-  
 }
+function resetState(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+function checkAnswer(event) {
+if (event.target.value == 'false') {
+  // substract 5 seconds if the answer is wrong
+  timeLeft=timeLeft-5;
+  this.classList.add('wrongAnswer');
+  }
+  else {
+    this.classList.add('rightAnswer');
+    // skips to next question
+    // nextQuestion();
+       }
+}
+
+// Start timer function 
+function startTimer() { 
+  setInterval(function(){
+
+    // decreasing timeLeft by 1
+    timeLeft--;
+
+    // when count equals to 0, stop the function
+    if(timeLeft === 0){
+        clearInterval(interval);
+    }
+    // display the current time
+    timer.innerText=timeLeft;
+}, 1000);
+} 
 
 // Questions database
 
