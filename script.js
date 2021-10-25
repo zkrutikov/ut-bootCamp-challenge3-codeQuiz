@@ -10,33 +10,50 @@ startBtn.addEventListener('click', startQuiz);
 nextQuestionBtn.addEventListener('click', nextQuestion);
 // Keeps track of question index
 let questionIndex = 0;
-
 // Start quiz function
 function startQuiz() {
-startTimer();
 populateQuestion();
 startBtn.classList.add('hide');
 timer.classList.remove('hide');
 nextQuestionBtn.classList.remove('hide');
 questionsContainer.classList.remove ('hide');
 answersContainer.classList.remove('hide');
-questionsContainer.innerHTML = questions[questionIndex].question;
+// Start timer function 
+let startTimer = setInterval(function(){
+  // decreasing timeLeft by 1
+  timeLeft--;
+  // // when count equals to 0, stop the function
+  if(timeLeft === 0){
+      clearInterval(startTimer);
+  }
+  // display the current time
+  timer.innerText=timeLeft;
+}, 1000);
+}
 
 function populateQuestion() {
   for (let i = 0; i < questions[questionIndex].answers.length; i++) {
+    questionsContainer.innerHTML = questions[questionIndex].question;
     let btn=document.createElement('button');
     btn.innerText=questions[questionIndex].answers[i].text;
-    btn.value=questions[questionIndex].answers[i].correct;
+    btn.value=questions[i].answers[i].correct;
     btn.classList.add('btn');
     btn.addEventListener('click', checkAnswer);
     answersContainer.appendChild(btn);
   }
-  questionIndex++;
-  }
 }
 
 function nextQuestion() {
+  resetState(answersContainer);
+  resetState(questionsContainer);
+  questionIndex++;
+  populateQuestion();
+  if(timeleft <= 0 || questionIndex > questions.length){
+    clearInterval(startTimer);
+    gameOver();
+  }
 }
+
 function resetState(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -55,23 +72,9 @@ if (event.target.value == 'false') {
     // nextQuestion();
        }
 }
-
-// Start timer function 
-function startTimer() { 
-  setInterval(function(){
-
-    // decreasing timeLeft by 1
-    timeLeft--;
-
-    // when count equals to 0, stop the function
-    if(timeLeft === 0){
-        clearInterval(interval);
-    }
-    // display the current time
-    timer.innerText=timeLeft;
-}, 1000);
-} 
-
+function gameOver () {
+  
+}
 // Questions database
 
 const questions = [
